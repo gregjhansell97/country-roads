@@ -21,6 +21,16 @@ db = mysql.connector.connect(
 
 print(db)
 
+@app.route('/data',methods=['POST'])
+def recv_post_data():
+    response = Response("Great job Alex, you POSTed some data!", status=200, mimetype='application/json')
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Expires"] = '0'
+    response.headers["Pragma"] = "no-cache"
+    return response
+    
+
 @app.route('/')
 def hello():
     """Return a friendly HTTP greeting."""
