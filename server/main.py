@@ -5,15 +5,16 @@
 #
 
 
-from flask import Flask, render_template
+from flask import Flask, render_template, Response
 import mysql.connector
+import json
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
 app = Flask(__name__,static_url_path='')
 
 db = mysql.connector.connect(
-    host="country-roads-256405:us-east1:country-roads",
+    unix_socket="/cloudsql/country-roads-256405:us-east1:country-roads",
     user="root",
     passwd="denver",
     database="country_roads_db")
@@ -25,14 +26,14 @@ def hello():
     """Return a friendly HTTP greeting."""
     return 'Hello World!'
 
-@app.route('/cars/now')
-def serve_static_cars_now():
-    """Serve the static canned response for /cars/now"""
-    return app.send_static_file('sample_get_cars_now.json')
+#@app.route('/cars/now')
+#def serve_static_cars_now():
+#    """Serve the static canned response for /cars/now"""
+#    return app.send_static_file('sample_get_cars_now.json')
 
 @app.route('/test')
 def test_sql():
-    mycursor = mydb.cursor()
+    mycursor = db.cursor()
 
     mycursor.execute("SHOW TABLES")
 
@@ -41,6 +42,32 @@ def test_sql():
         retval+=str(x)
     return retval
 
+@app.route('/cars/all')
+def get_all_cars():
+    pass
+
+# TODO: CHANGE THIS ENDPOINT PATH
+@app.route('/cars/new')
+def get_cars_now():
+    query = "select * from measurements where (select count(*) from measurements as m where m.carId=measurements.carId and m.measurementTime<=measurements.measurementTime)<=1;"
+
+    mycursor = db.cursor()
+    mycursor.execute(query)
+
+    results = []
+    for (mId,cId,color,heading,gasLevel,speed,time,rsid) in mycursor:
+        results.append({
+            "measurementId": mId,
+	    "carId": cId,
+	    "color": color,
+            "heading": heading,
+	    "gasLevel": gasLevel,
+	    "speed": speed,
+	    "time": str(time),
+	    "relayStationId": rsid })
+
+    response = Response(json.dumps(results), status=200, mimetype='application/json')
+    return response
 
 if __name__ == '__main__':
     # This is used when running locally only. When deploying to Google App
