@@ -41,6 +41,8 @@ def test_sql():
         retval+=str(x)
     return retval
 
+@app.route('/data',method="PUT")
+
 
 if __name__ == '__main__':
     # This is used when running locally only. When deploying to Google App
