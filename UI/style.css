@@ -15,13 +15,25 @@ body {
 
 	
 }
+
+.header>.logo {
+	height: 60px;
+	float: left;
+	margin-left: 65px;
+	margin-top: 6px;
+}
+
 .header>p {
 	color: #FFFFFF;
 	font-family: 'Fugaz One', cursive;
 	font-size: 50px;
-	margin-left: 60px;
+	margin-left: 5px;
+	float: left;
 }
 
+.mainContainer {
+	display: flex;
+}
 
 .relayStationContainer {
 	width:540px;
@@ -78,10 +90,10 @@ body {
 
 
 .carContainer {
-	margin: 0 25px 25px 25px;
+	margin: 0 25px 30px 25px;
 	background-color: #FFFFFF;
-	height: 200px;
 	box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
+	padding-bottom: 25px;
 }
 
 .carHeader {
@@ -91,7 +103,7 @@ body {
 	border-color: #BFBFBF;
 }
 
-.squareGreen {
+.squareGreen, .squareBlue, .squareOrange, .squareYellow {
 	display: inline-block;
 	width: 40px;
 	height: 40px;
@@ -102,8 +114,20 @@ body {
 	background-color: #70AD47;
 }
 
+.squareBlue {
+	background-color: #5b9bd5;
+}
+
+.squareOrange {
+	background-color: #ed7d31;
+}
+
+.squareYellow {
+	background-color: #ffc000;
+}
+
 .carDescription {
-	font-size: 24px;
+	font-size: 26px;
 	padding-top: 6px;
 	padding-left: 10px;
 	float: left;
@@ -112,7 +136,7 @@ body {
 .carDataContainer {
 	display: flex;
 	justify-content: space-between;
-	padding: 15px 70px 0 70px;
+	padding: 15px 70px 20px 70px;
 	font-weight: 900;
 	text-align: center;
 }
@@ -123,6 +147,20 @@ body {
 
 .dataLabel {
 	font-size: 28px;
+}
+
+.carTimestamp {
+	font-weight: 300;
+	font-size: 18px;
+	float: left;
+	padding-left: 10px;
+}
+
+.measId {
+	font-weight: 300;
+	font-size: 18px;
+	float: right;
+	padding-right: 10px;
 }
 
 .footer {
