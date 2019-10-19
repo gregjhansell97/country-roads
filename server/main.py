@@ -18,6 +18,8 @@ db = mysql.connector.connect(
     passwd="denver",
     database="country_roads_db")
 
+print(db)
+
 @app.route('/')
 def hello():
     """Return a friendly HTTP greeting."""
