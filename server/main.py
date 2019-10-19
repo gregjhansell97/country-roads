@@ -11,7 +11,7 @@ import json
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
-app = Flask(__name__,static_url_path='')
+app = Flask(__name__)
 
 db = mysql.connector.connect(
     unix_socket="/cloudsql/country-roads-256405:us-east1:country-roads",
@@ -26,11 +26,6 @@ def hello():
     """Return a friendly HTTP greeting."""
     return 'Hello World!'
 
-#@app.route('/cars/now')
-#def serve_static_cars_now():
-#    """Serve the static canned response for /cars/now"""
-#    return app.send_static_file('sample_get_cars_now.json')
-
 @app.route('/test')
 def test_sql():
     mycursor = db.cursor()
@@ -42,12 +37,8 @@ def test_sql():
         retval+=str(x)
     return retval
 
-@app.route('/cars/all')
-def get_all_cars():
-    pass
 
-# TODO: CHANGE THIS ENDPOINT PATH
-@app.route('/cars/new')
+@app.route('/cars/current')
 def get_cars_now():
     query = "select * from measurements where (select count(*) from measurements as m where m.carId=measurements.carId and m.measurementTime<=measurements.measurementTime)<=1;"
 
@@ -66,7 +57,13 @@ def get_cars_now():
 	    "time": str(time),
 	    "relayStationId": rsid })
 
+
+    print("Response: "+json.dumps(results))
     response = Response(json.dumps(results), status=200, mimetype='application/json')
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Expires"] = '0'
+    response.headers["Pragma"] = "no-cache"
     return response
 
 if __name__ == '__main__':
