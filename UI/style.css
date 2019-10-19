@@ -70,7 +70,7 @@ body {
 	display: inline;
 }
 
-.relayStationHeader>p.stationDescriptionId {
+.relayStationHeader>p.stationId {
 	font-weight: 300;
 	font-size: 24px;
 	margin-right: 0;
