@@ -5,8 +5,9 @@
 #
 
 
-from flask import Flask, render_template
+from flask import Flask, render_template, Response
 import mysql.connector
+import json
 
 # If `entrypoint` is not defined in app.yaml, App Engine will look for an app
 # called `app` in `main.py`.
@@ -62,7 +63,7 @@ def get_cars_now():
             "heading": heading,
 	    "gasLevel": gasLevel,
 	    "speed": speed,
-	    "time": time,
+	    "time": str(time),
 	    "relayStationId": rsid })
 
     response = Response(json.dumps(results), status=200, mimetype='application/json')
