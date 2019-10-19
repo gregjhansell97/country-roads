@@ -5,7 +5,7 @@
 #
 
 
-from flask import Flask, render_template, Response
+from flask import Flask, render_template, Response, request
 import mysql.connector
 import json
 
@@ -19,34 +19,51 @@ db = mysql.connector.connect(
     passwd="denver",
     database="country_roads_db")
 
-print(db)
 
 @app.route('/data',methods=['POST'])
 def recv_post_data():
-    response = Response("Great job Alex, you POSTed some data!", status=200, mimetype='application/json')
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    response.headers["Expires"] = '0'
-    response.headers["Pragma"] = "no-cache"
-    return response
+    body = request.get_json()
+
+    query = "INSERT INTO measurements VALUES "
+
+    try:
+        for m in body:
+            measurement = "("+
+                m["carId"] + "," +
+                m["color"] + "," +
+                str(m.get("heading","NULL")) + "," +
+                str(m.get("gasLevel","NULL")) + "," +
+                str(m.get("speed","NULL")) + "," +
+                m["time"] + "," +
+                str(m.get("relayStationId","NULL")) + ","
+                + "),"
+            query += measurement
+        query[-1] = ';'
+
+        mycursor = db.cursor()
+        mycursor.execute(query)
+
+        
+        response = Response("Great job Alex, you POSTed some data!", status=200, mimetype='application/json')
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response.headers["Expires"] = '0'
+        response.headers["Pragma"] = "no-cache"
+        return response
+
+    except:
+        response = Response("Bad request", status=400)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response.headers["Expires"] = '0'
+        response.headers["Pragma"] = "no-cache"
+        return response
     
 
 @app.route('/')
 def hello():
     """Return a friendly HTTP greeting."""
     return 'Hello World!'
-
-@app.route('/test')
-def test_sql():
-    mycursor = db.cursor()
-
-    mycursor.execute("SHOW TABLES")
-
-    retval = ""
-    for x in mycursor:
-        retval+=str(x)
-    return retval
-
 
 @app.route('/cars/current')
 def get_cars_now():
