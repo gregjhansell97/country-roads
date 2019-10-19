@@ -2,10 +2,10 @@
 // 		"measurementId": 1234567890,
 // 		"carId": 12345,
 // 		"color": "green",
-// 		"heading": 270,
+// 		"heading": 280,
 // 		"gasLevel": 0.75,
 // 		"speed": 50,
-// 		"time": "019-10-19T12:30:00.000Z",
+// 		"time": "10/19/19 4:35:23 AM",
 // 		"relayStationId": 67890
 // 	},
 // 	{
@@ -15,7 +15,7 @@
 // 		"heading": 90,
 // 		"gasLevel": 0.50,
 // 		"speed": 60,
-// 		"time": "019-10-19T12:31:00.000Z",
+// 		"time": "10/19/19 4:35:23 AM",
 // 		"relayStationId": 67890
 // 	}
 // ];
@@ -30,17 +30,18 @@ var relayStations = [
 
 document.addEventListener('DOMContentLoaded', onLoadCalback, false);
 function onLoadCalback() {
-	let url = 'https://country-roads-256405.appspot.com/cars/now';
-
+	let url = 'https://country-roads-256405.appspot.com/cars/current';
 	fetch(url)
 	.then(res => res.json())
 	.then((out) => {
-	  console.log('Checkout this JSON! ', out);
+	  console.log('Check out this JSON! ', out);
 	})
 	.catch(err => { throw err });
 
 	writeRelayStationContainers();
-	writeCarContainers(out);
+	writeRelayStationContainers();
+	writeRelayStationContainers();
+	writeCarContainers(res);
 }
 
 
@@ -102,11 +103,22 @@ function writeCarContainers(cars) {
 
 		carContainer.getElementById('speed').textContent  = cars[i].speed;
 		carContainer.getElementById('gas').textContent  = cars[i].gasLevel*100 + '%';
-		carContainer.getElementById('heading').textContent  = cars[i].heading;
+		carContainer.querySelector('.headingArrow').style =
+			'transform: rotate(' + cars[i].heading + 'deg);';
+		carContainer.getElementById('headingLabel').textContent = angle2label(cars[i].heading);
+		// carContainer.getElementById('heading').textContent  = cars[i].heading;
 		carContainer.querySelector('.carTimestamp').textContent  = cars[i].time;
 		carContainer.querySelector('.measId').textContent = 'Meas # ' + cars[i].measurementId;
 
 		relayStationContent = document.getElementById('relayStationContent'+cars[i].relayStationId);
 		relayStationContent.appendChild(carContainer);
 	}
+}
+
+function angle2label(angle) {
+	anglePerName = 360.0 / 8.0;
+	firstThreshold = anglePerName/2;
+	index = Math.floor((angle + firstThreshold)/anglePerName) % 8;
+	names = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+	return(names[index]);
 }
