@@ -22,26 +22,42 @@
 
 var relayStations = [
 {
+	"relayStationId": 1234567890,
+	"locationName": "Alpha",
+	"roadName": "Elm Street"
+},
+{
+	"relayStationId": 345678901,
+	"locationName": "Alpha",
+	"roadName": "Elm Street"
+},
+{
+	"relayStationId": 567890123,
+	"locationName": "Alpha",
+	"roadName": "Elm Street"
+},
+{
 	"relayStationId": 67890,
 	"locationName": "Alpha",
 	"roadName": "Elm Street"
-}
+},
 ]
 
 document.addEventListener('DOMContentLoaded', onLoadCalback, false);
 function onLoadCalback() {
-	let url = 'https://country-roads-256405.appspot.com/cars/current';
+
+	writeRelayStationContainers();
+
+	url = 'https://country-roads-256405.appspot.com/cars/current';
 	fetch(url)
 	.then(res => res.json())
 	.then((out) => {
 	  console.log('Check out this JSON! ', out);
+	  //cars = JSON.parse(out);
+	  writeCarContainers(out);
 	})
 	.catch(err => { throw err });
 
-	writeRelayStationContainers();
-	writeRelayStationContainers();
-	writeRelayStationContainers();
-	writeCarContainers(res);
 }
 
 
