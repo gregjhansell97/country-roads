@@ -44,7 +44,7 @@ struct Msg{
 
 namespace relay {
 struct Body {
-    unsigned int location;
+    unsigned char location;
     car::Body car;
 };
 struct Msg {

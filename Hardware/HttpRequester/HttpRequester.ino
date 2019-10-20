@@ -10,8 +10,8 @@ hmap::Location relay_station(http_requester_id);
 RadioChannel radio_channel;
 
 void on_relay_msg(void* raw_msg){
-    relay::Msg* r_msg = static_cast<relay::Msg*>(raw_msg);
-    Serial.write((byte*)r_msg, sizeof(relay::Msg));
+    relay::Msg& r_msg = *static_cast<relay::Msg*>(raw_msg);
+    Serial.write((byte*)(&r_msg.body), sizeof(relay::Body));
 }
 
 const byte address[6] = "00001";
