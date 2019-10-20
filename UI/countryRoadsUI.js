@@ -118,7 +118,7 @@ function writeCarContainers(cars) {
 		carContainer.querySelector('.carDescription').textContent = description;
 
 		carContainer.getElementById('speed').textContent  = cars[i].speed;
-		carContainer.getElementById('gas').textContent  = cars[i].gasLevel*100 + '%';
+		carContainer.getElementById('gas').textContent  = Math.round(cars[i].gasLevel*100)	 + '%';
 		carContainer.querySelector('.headingArrow').style =
 			'transform: rotate(' + cars[i].heading + 'deg);';
 		carContainer.getElementById('headingLabel').textContent = angle2label(cars[i].heading);
