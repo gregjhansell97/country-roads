@@ -29,7 +29,7 @@ void setup() {
     //Setup the car characteristics
     car_status_msg.car_id = 22;//33;
     car_status_msg.color = BLUE;//GREEN;
-    car_status_msg.heading = 270;
+    car_status_msg.heading = analogRead(A0)/4;
     car_status_msg.gas_level = 14;
     car_status_msg.speed = 35;
 
@@ -44,6 +44,10 @@ unsigned int publish_count = 0;
 
 void loop() {
     delay(cycle_delay);
+
+    // Read "data" from potentiometers
+    car_status_msg.heading = analogRead(A0)/4;
+    
     if((publish_count%publish_delay_ratio) == 0){
         vehicle.destinations(hmap::loc::ANY).publish(car_status_msg);
     }
