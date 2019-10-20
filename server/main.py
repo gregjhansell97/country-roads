@@ -33,7 +33,7 @@ def recv_post_data():
             
         query = query[:-1]+';' # remove trailing comma and end with a semicolon
 
-        mycursor = db.cursor()
+        mycursor = db.cursor(buffered=True)
         mycursor.execute(query)
 
         db.commit()
@@ -46,6 +46,14 @@ def recv_post_data():
         response.headers["Pragma"] = "no-cache"
         return response
 
+#    except OperationalError as e:
+#        mycursor.close()
+#        db.close
+#        db = mysql.connector.connect(
+#            unix_socket="/cloudsql/country-roads-256405:us-east1:country-roads",
+#            user="root",
+#            passwd="denver",
+#            database="country_roads_db")
     except Exception as e:
         print(str(e))
         response = Response("Bad request", status=400)    
@@ -64,7 +72,7 @@ def hello():
 def get_cars_now():
     query = "select * from measurements where (select count(*) from measurements as m where m.carId=measurements.carId and m.measurementTime>=measurements.measurementTime)<=1;"
 
-    mycursor = db.cursor()
+    mycursor = db.cursor(buffered=True)
     mycursor.execute(query)
 
     results = []
@@ -79,10 +87,16 @@ def get_cars_now():
 	        "speed": speed,
 	        "time": str(time),
 	        "relayStationId": rsid })
-    except:
-        pass
-    finally:
         mycursor.close()
+    except OperationalError as e:
+        pass
+#        mycursor.close()
+#        db.close
+#        db = mysql.connector.connect(
+#            unix_socket="/cloudsql/country-roads-256405:us-east1:country-roads",
+#            user="root",
+#            passwd="denver",
+#            database="country_roads_db")
     
     print("Response: "+json.dumps(results))
     response = Response(json.dumps(results), status=200, mimetype='application/json')

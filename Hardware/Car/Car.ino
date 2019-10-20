@@ -21,8 +21,8 @@ void on_car_msg(void* raw_msg){
     Serial.println(msg->body.speed); 
 
     // if two cars are going the same way and have different speeds
-    int hdiff = msg->body.heading - car_status_msg.heading;
-    int sdiff = msg->body.speed - car_status_msg.speed;
+    int hdiff = msg->body.heading - car_status_msg.body.heading;
+    int sdiff = msg->body.speed - car_status_msg.body.speed;
     if (heading_tolerance>=hdiff && heading_tolerance*(-1)<=hdiff &&
         speed_tolerance<=sdiff && speed_tolerance*(-1)>=sdiff){
         // turn on an LED
@@ -60,9 +60,9 @@ void loop() {
     delay(cycle_delay);
 
     // Read "data" from potentiometers
-    car_status_msg.heading = analogRead(A0)/4;
-    car_status_msg.gas_level =  analogRead(A1)/4;
-    car_status_msg.speed =  analogRead(A2)/8;
+    car_status_msg.body.heading = analogRead(A0)/4;
+    car_status_msg.body.gas_level =  analogRead(A1)/4;
+    car_status_msg.body.speed =  analogRead(A2)/8;
     
     if((publish_count%publish_delay_ratio) == 0){
         vehicle.destinations(hmap::loc::ANY).publish(car_status_msg);
