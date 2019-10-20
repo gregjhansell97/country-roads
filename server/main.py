@@ -24,23 +24,21 @@ db = mysql.connector.connect(
 def recv_post_data():
     body = request.get_json()
 
-    query = "INSERT INTO measurements VALUES "
+    query = "INSERT INTO measurements (carId,color,heading,gasLevel,speed,measurementTime,relayStationId) VALUES "
 
-    
-    
     try:
         for m in body:
-            measurement = "(" + m["carId"] + "," + m["color"] + "," + str(m.get("heading","NULL")) + "," + str(m.get("gasLevel","NULL")) + "," + str(m.get("speed","NULL")) + "," + str(m["time"]) + "," + str(m.get("relayStationId","NULL")) + "),"
+            measurement = "(" + str(m["carId"]) + ",'" + m["color"] + "'," + str(m.get("heading","NULL")) + "," + str(m.get("gasLevel","NULL")) + "," + str(m.get("speed","NULL")) + ",'" + str(m["time"]) + "'," + str(m.get("relayStationId","NULL")) + "),"
             query += measurement
-        query[-1] = ';'
-
-        print("Successfully read fields....query='%s'" % query)
+            
+        query = query[:-1]+';' # remove trailing comma and end with a semicolon
 
         mycursor = db.cursor()
         mycursor.execute(query)
 
-        print("Queried database")
-        
+        db.commit()
+        mycursor.close()
+                
         response = Response("Great job Alex, you POSTed some data!", status=200, mimetype='application/json')
         response.headers.add('Access-Control-Allow-Origin', '*')
         response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
@@ -48,9 +46,15 @@ def recv_post_data():
         response.headers["Pragma"] = "no-cache"
         return response
 
-    except:
+    except Exception as e:
+        print(str(e))
         response = Response("Bad request", status=400)    
-
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+        response.headers["Expires"] = '0'
+        response.headers["Pragma"] = "no-cache"
+        return response
+    
 @app.route('/')
 def hello():
     """Return a friendly HTTP greeting."""
@@ -58,24 +62,28 @@ def hello():
 
 @app.route('/cars/current')
 def get_cars_now():
-    query = "select * from measurements where (select count(*) from measurements as m where m.carId=measurements.carId and m.measurementTime<=measurements.measurementTime)<=1;"
+    query = "select * from measurements where (select count(*) from measurements as m where m.carId=measurements.carId and m.measurementTime>=measurements.measurementTime)<=1;"
 
     mycursor = db.cursor()
     mycursor.execute(query)
 
     results = []
-    for (mId,cId,color,heading,gasLevel,speed,time,rsid) in mycursor:
-        results.append({
-            "measurementId": mId,
-	    "carId": cId,
-	    "color": color,
-            "heading": heading,
-	    "gasLevel": gasLevel,
-	    "speed": speed,
-	    "time": str(time),
-	    "relayStationId": rsid })
-
-
+    try:
+        for (mId,cId,color,heading,gasLevel,speed,time,rsid) in mycursor:
+            results.append({
+                "measurementId": mId,
+	        "carId": cId,
+	        "color": color,
+                "heading": heading,
+	        "gasLevel": gasLevel,
+	        "speed": speed,
+	        "time": str(time),
+	        "relayStationId": rsid })
+    except:
+        pass
+    finally:
+        mycursor.close()
+    
     print("Response: "+json.dumps(results))
     response = Response(json.dumps(results), status=200, mimetype='application/json')
     response.headers.add('Access-Control-Allow-Origin', '*')
