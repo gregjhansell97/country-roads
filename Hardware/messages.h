@@ -24,7 +24,7 @@ namespace car {
 struct Body {
   unsigned char car_id;
   unsigned char color;
-  unsigned int heading;    // 0 is N 256 is N
+  unsigned char heading;    // 0 is N 255 is N
   unsigned char gas_level; //scaled 0 to 255
   unsigned char speed; //MPH
 };
