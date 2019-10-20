@@ -26,23 +26,20 @@ def recv_post_data():
 
     query = "INSERT INTO measurements VALUES "
 
+    
+    
     try:
         for m in body:
-            measurement = "("+
-                m["carId"] + "," +
-                m["color"] + "," +
-                str(m.get("heading","NULL")) + "," +
-                str(m.get("gasLevel","NULL")) + "," +
-                str(m.get("speed","NULL")) + "," +
-                m["time"] + "," +
-                str(m.get("relayStationId","NULL")) + ","
-                + "),"
+            measurement = "(" + m["carId"] + "," + m["color"] + "," + str(m.get("heading","NULL")) + "," + str(m.get("gasLevel","NULL")) + "," + str(m.get("speed","NULL")) + "," + str(m["time"]) + "," + str(m.get("relayStationId","NULL")) + "),"
             query += measurement
         query[-1] = ';'
+
+        print("Successfully read fields....query='%s'" % query)
 
         mycursor = db.cursor()
         mycursor.execute(query)
 
+        print("Queried database")
         
         response = Response("Great job Alex, you POSTed some data!", status=200, mimetype='application/json')
         response.headers.add('Access-Control-Allow-Origin', '*')
@@ -52,13 +49,7 @@ def recv_post_data():
         return response
 
     except:
-        response = Response("Bad request", status=400)
-        response.headers.add('Access-Control-Allow-Origin', '*')
-        response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-        response.headers["Expires"] = '0'
-        response.headers["Pragma"] = "no-cache"
-        return response
-    
+        response = Response("Bad request", status=400)    
 
 @app.route('/')
 def hello():
