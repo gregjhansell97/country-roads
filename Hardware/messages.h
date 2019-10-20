@@ -21,13 +21,7 @@
 
 namespace car {
 
-struct Msg{
-  hmap::msg::Header header {
-      .type = CAR_MSG,
-      .bcast_radius = 1,
-      .destination = hmap::loc::ANY,
-      .size = sizeof(Msg)
-  };
+struct Body {
   unsigned char car_id;
   unsigned char color;
   unsigned int heading;    // 0 is N 256 is N
@@ -35,15 +29,33 @@ struct Msg{
   unsigned char speed; //MPH
 };
 
+struct Msg{
+  hmap::msg::Header header {
+      .type = CAR_MSG,
+      .bcast_radius = 1,
+      .destination = hmap::loc::ANY,
+      .size = sizeof(Msg)
+  };
+  Body body;
+};
+
 }
 
-/*
-namespace relay_station {
 
+namespace relay {
+struct Body {
+    unsigned int location;
+    car::Body car;
+};
 struct Msg {
     hmap::msg::Header header {
         .type = RELAY_STATION_MSG,
         .bcast_radius = 1,
-        .destination = 
-*/
+        .destination = hmap::loc::ANY,
+        .size = sizeof(Msg)
+    };
+    Body body;
+};
+
+}
 #endif //COUNTRY_ROADS_HARDWARE_MESSAGES_H_

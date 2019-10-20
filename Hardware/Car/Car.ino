@@ -1,6 +1,3 @@
-//#include <SPI.h>
-//#include <nRF24L01.h>
-#include <RF24.h>
 #include <hive_map.hpp>
 
 #include "messages.h"
@@ -16,15 +13,16 @@ int led_pin = 8;
 
 void on_car_msg(void* raw_msg){
     car::Msg* msg = static_cast<car::Msg*>(raw_msg);
-    Serial.println(msg->car_id);
-    Serial.println(msg->color);
-    Serial.println(msg->heading);
-    Serial.println(msg->gas_level);
-    Serial.println(msg->speed); 
+
+    Serial.println(msg->body.car_id);
+    Serial.println(msg->body.color);
+    Serial.println(msg->body.heading);
+    Serial.println(msg->body.gas_level);
+    Serial.println(msg->body.speed); 
 
     // if two cars are going the same way and have different speeds
-    int hdiff = msg->heading - car_status_msg.heading;
-    int sdiff = msg->speed - car_status_msg.speed;
+    int hdiff = msg->body.heading - car_status_msg.heading;
+    int sdiff = msg->body.speed - car_status_msg.speed;
     if (heading_tolerance>=hdiff && heading_tolerance*(-1)<=hdiff &&
         speed_tolerance<=sdiff && speed_tolerance*(-1)>=sdiff){
         // turn on an LED
@@ -43,18 +41,18 @@ void setup() {
     digitalWrite(led_pin, LOW);
     
     //Setup the car characteristics
-    car_status_msg.car_id = 22;//33;
-    car_status_msg.color = BLUE;//GREEN;
-    car_status_msg.heading = analogRead(A0)/4;
-    car_status_msg.gas_level =  analogRead(A1)/4;
-    car_status_msg.speed =  analogRead(A2)/8;
+    car_status_msg.body.car_id = 22;//33;
+    car_status_msg.body.color = BLUE;//GREEN;
+    car_status_msg.body.heading = analogRead(A0)/4;
+    car_status_msg.body.gas_level =  analogRead(A1)/4;
+    car_status_msg.body.speed =  analogRead(A2)/8;
 
     //set up car location
     vehicle.subscribe<car::Msg>(&on_car_msg);
     vehicle.add_channel(radio_channel);
 }
 
-const unsigned int cycle_delay = 400;
+const unsigned int cycle_delay = 250;
 const unsigned int publish_delay_ratio = 4;
 unsigned int publish_count = 0;
 
