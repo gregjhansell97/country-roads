@@ -5,15 +5,15 @@
  * This code just test basic functionality of the devices
  */
  
-#include <SPI.h>
-#include <nRF24L01.h>
+//#include <SPI.h>
+//#include <nRF24L01.h>
 #include <RF24.h>
-#include <hive_map.hpp>
-#include <location_messages.h>
+//#include <hive_map.hpp>
+//#include <location_messages.h>
 
 
 RF24 radio(7, 8);
-
+/*
 struct CarInfo {
   hmap::msg::Header header {
     .id = HOPS_MSG_ID,
@@ -28,12 +28,13 @@ struct CarInfo {
 
 #define BLUE 0
 #define RED 1
-
+*/
 
 const byte address[6] = "00001";
 
 void setup() {
   Serial.begin(9600);
+  Serial.println("starting reciever...");
   radio.begin();
   radio.openReadingPipe(0, address);
   radio.setPALevel(RF24_PA_MIN);
@@ -43,12 +44,13 @@ void setup() {
 void loop() {
   if (radio.available()) {
     Serial.println("Recieved...");
-    //hmap::HopsMsg msg;
-    CarInfo msg;
-    radio.read(&msg, sizeof(msg));
-    Serial.println(msg.header.id);
-    Serial.println(msg.speeds);
-    Serial.println(msg.gasLevel);
-    Serial.println(msg.color);
+    char msg[4];
+    radio.read(msg, 3);
+    msg[3] = '\0';
+    Serial.println(msg);
+    
+    radio.read(msg, 3);
+    msg[3] = '\0';
+    Serial.println(msg);
   }
 }
