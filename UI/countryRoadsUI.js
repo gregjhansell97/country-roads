@@ -1,24 +1,46 @@
-// var cars = [{
-// 		"measurementId": 1234567890,
-// 		"carId": 12345,
-// 		"color": "green",
-// 		"heading": 280,
-// 		"gasLevel": 0.75,
-// 		"speed": 50,
-// 		"time": "10/19/19 4:35:23 AM",
-// 		"relayStationId": 67890
-// 	},
-// 	{
-// 		"measurementId": 1234567891,
-// 		"carId": 12346,
-// 		"color": "blue",
-// 		"heading": 90,
-// 		"gasLevel": 0.50,
-// 		"speed": 60,
-// 		"time": "10/19/19 4:35:23 AM",
-// 		"relayStationId": 67890
-// 	}
-// ];
+var cars = [{
+		"measurementId": 1234567890,
+		"carId": 12345,
+		"color": "green",
+		"heading": 280,
+		"gasLevel": 0.75,
+		"speed": 50,
+		"time": "10/19/19 4:35:23 AM",
+		"relayStationId": 67890
+	},
+	{
+		"measurementId": 1234567891,
+		"carId": 12346,
+		"color": "blue",
+		"heading": 90,
+		"gasLevel": 0.50,
+		"speed": 60,
+		"time": "10/19/19 4:35:23 AM",
+		"relayStationId": 67890
+	}
+];
+
+var cars2 = [{
+		"measurementId": 1234567890,
+		"carId": 12345,
+		"color": "green",
+		"heading": 129,
+		"gasLevel": 0.75,
+		"speed": 80,
+		"time": "10/19/19 4:35:23 AM",
+		"relayStationId": 67890
+	},
+	{
+		"measurementId": 1234567891,
+		"carId": 12346,
+		"color": "blue",
+		"heading": 170,
+		"gasLevel": 0.50,
+		"speed": 2,
+		"time": "10/19/19 4:35:23 AM",
+		"relayStationId": 67890
+	}
+];
 
 var relayStations = [
 {
@@ -46,7 +68,11 @@ var relayStations = [
 document.addEventListener('DOMContentLoaded', onLoadCalback, false);
 function onLoadCalback() {
 
-	writeRelayStationContainers();
+	// refreshView(cars, relayStations)
+	// setTimeout(function(){refreshView(cars2, relayStations)}, 500);
+	// setTimeout(onLoadCalback, 1000);
+	// writeRelayStationContainers(relayStations);
+	//  writeCarContainers(cars);
 
 	url = 'https://country-roads-256405.appspot.com/cars/current';
 	fetch(url)
@@ -54,7 +80,8 @@ function onLoadCalback() {
 	.then((out) => {
 	  console.log('Check out this JSON! ', out);
 	  //cars = JSON.parse(out);
-	  writeCarContainers(out);
+	  refreshView(out, relayStations);
+	  setTimeout(onLoadCalback, 2000);
 	})
 	.catch(err => { throw err });
 
@@ -62,12 +89,10 @@ function onLoadCalback() {
 
 
 // Generate relayStationContainer DOM elements
-function writeRelayStationContainers() {
+function writeRelayStationContainers(relayStations) {
 	var mainContainer = document.getElementsByClassName('mainContainer')[0];
 
-	for (var i = 0; i < relayStations.length; i++) {
-		console.log(relayStations[i].locationName);
-		
+	for (var i = 0; i < relayStations.length; i++) {		
 		relayStationContainer =  document.createElement('div');
 		relayStationContainer.className = 'relayStationContainer';
 		relayStationHeader = document.createElement('div');
@@ -92,7 +117,6 @@ function writeRelayStationContainers() {
 		relayStationContent.className = 'relayStationContent';
 		relayStationContent.id = 'relayStationContent'+relayStations[i].relayStationId;
 		relayStationContainer.appendChild(relayStationContent);
-
 
 		mainContainer.appendChild(relayStationContainer);
 	}
@@ -129,6 +153,17 @@ function writeCarContainers(cars) {
 		relayStationContent = document.getElementById('relayStationContent'+cars[i].relayStationId);
 		relayStationContent.appendChild(carContainer);
 	}
+}
+
+function refreshView(cars, relayStations) {
+	// Delete old stuff
+	var mainContainer = document.getElementsByClassName('mainContainer')[0];
+	while (mainContainer.firstChild) {
+    	mainContainer.removeChild(mainContainer.firstChild);
+  	}
+	// Put in new stuff
+	writeRelayStationContainers(relayStations);
+	writeCarContainers(cars);
 }
 
 function angle2label(angle) {
