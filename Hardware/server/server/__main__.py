@@ -37,7 +37,7 @@ class CarMsg:
         }
 
     def __str__(self):
-        return str(self.loc) + ": " + str(self.car_id)
+        return str(self.to_json())
 
 def connect_to_arduino(baud_rate=9600):
     ports = list(list_ports.comports())
@@ -55,14 +55,14 @@ def connect_to_arduino(baud_rate=9600):
 
 def listen_for_data():
     url = "https://country-roads-256405.appspot.com/data"
-    print("listening for data")
-    print(CarMsg.size())
+    print("country roads take me home")
+    #print(CarMsg.size())
     arduino = connect_to_arduino(9600)
     if arduino is None:
         print("failed to connect")
         return
     else:
-        print("connected")
+        print("connected! WEST VIRGINIA")
     # need to have message size!
     try:
         while True: 
@@ -71,7 +71,7 @@ def listen_for_data():
             print(str(msg))
             # this is where you publish
             payload = json.dumps([msg.to_json()])
-            print(payload)
+            #print(payload)
 
             headers = {
                 'Content-Type': "application/json",
@@ -86,7 +86,7 @@ def listen_for_data():
                 'cache-control': "no-cache"
             }
             response = requests.request("POST", url, data=payload, headers=headers)
-            print(response.text)
+            #print(response.text)
 
     except KeyboardInterrupt:
         return

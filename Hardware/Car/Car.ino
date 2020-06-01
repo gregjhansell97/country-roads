@@ -41,8 +41,8 @@ void setup() {
     digitalWrite(led_pin, LOW);
     
     //Setup the car characteristics
-    car_status_msg.body.car_id = 22;//33;
-    car_status_msg.body.color = BLUE;//GREEN;
+    car_status_msg.body.car_id = 100;//33;
+    car_status_msg.body.color = GREEN;
     car_status_msg.body.heading = analogRead(A0)/4;
     car_status_msg.body.gas_level =  analogRead(A1)/4;
     car_status_msg.body.speed =  analogRead(A2)/8;
