@@ -1,0 +1,190 @@
+* {
+	margin: 0;
+	
+}
+
+body {
+	background-color: #F7F7F7;
+	font-family: 'Roboto', sans-serif;
+}
+
+.header {
+	height:75px;
+
+	background-color: #C00000;
+
+	
+}
+
+.header>.logo {
+	height: 60px;
+	float: left;
+	margin-left: 65px;
+	margin-top: 6px;
+}
+
+.header>p {
+	color: #FFFFFF;
+	font-family: 'Fugaz One', cursive;
+	font-size: 50px;
+	margin-left: 5px;
+	float: left;
+}
+
+.mainContainer {
+	display: flex;
+	flex-wrap: wrap;
+	padding-bottom: 60px;
+}
+
+.relayStationContainer {
+	width:540px;
+	min-width: 450px;
+	
+	margin-top: 50px;
+
+	background-color: #eef1f6;
+	margin-left: 60px;
+	
+
+	border-style: solid;
+	border-width: 0;
+	border-color: #BFBFBF;
+	border-top-width: 15px;
+	border-top-color: #002060;
+}
+
+.relayStationHeader {
+	padding: 5px 15px 10px 15px;
+	background-color: #FFFFFF;
+	border-style: solid;
+	border-width: 0px 1px 1px 1px;
+	border-color: #BFBFBF;
+	position: relative;
+}
+.relayStationHeader>h2 {
+	font-weight: 500; /*medium*/
+	font-style: normal;
+	font-size: 34px;
+}
+
+.relayStationHeader>p.stationDescription {
+	font-size: 34px;
+	display: inline;
+}
+
+.relayStationHeader>p.stationId {
+	font-weight: 300;
+	font-size: 24px;
+	margin-right: 0;
+	display: inline-block;
+    position: absolute;
+    bottom: 10px;
+    right: 15px;
+}
+
+.relayStationContent {
+	border-style: solid;
+	border-width: 0 1px 1px 1px;
+	border-color: #BFBFBF;
+	min-height:60vh;
+	padding-top: 40px;
+}
+
+
+.carContainer {
+	margin: 0 25px 30px 25px;
+	background-color: #FFFFFF;
+	box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
+	padding-bottom: 25px;
+}
+
+.carHeader {
+	height: 40px;
+	border-style: solid;
+	border-width: 0 0 1px 0;
+	border-color: #BFBFBF;
+}
+
+.squareGreen, .squareBlue, .squareOrange, .squareYellow {
+	display: inline-block;
+	width: 40px;
+	height: 40px;
+	float: left;
+}
+
+.squareGreen {
+	background-color: #70AD47;
+}
+
+.squareBlue {
+	background-color: #5b9bd5;
+}
+
+.squareOrange {
+	background-color: #ed7d31;
+}
+
+.squareYellow {
+	background-color: #ffc000;
+}
+
+.carDescription {
+	font-size: 26px;
+	padding-top: 6px;
+	padding-left: 10px;
+	float: left;
+}
+
+.carDataContainer {
+	display: flex;
+	justify-content: space-between;
+	padding: 15px 70px 20px 70px;
+	font-weight: 900;
+	text-align: center;
+}
+
+.dataValue {
+	font-size: 40px;
+}
+
+.dataLabel {
+	font-size: 28px;
+	min-width: 80px;
+}
+
+.headingArrow {
+	height: 40px;
+	margin-top: 6px;
+	margin-bottom: 1px;
+
+}
+
+.carTimestamp {
+	font-weight: 300;
+	font-size: 18px;
+	float: left;
+	padding-left: 10px;
+}
+
+.measId {
+	font-weight: 300;
+	font-size: 18px;
+	float: right;
+	padding-right: 10px;
+}
+
+.footer {
+	height:30px;
+	background-color: #C00000;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	color: #FFFFFF;
+}
+
+.footer>p {
+	margin: 5px;
+	text-align: center;
+	font-size: 12pt;
+}

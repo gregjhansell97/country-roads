@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Country Roads</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Fugaz+One|Roboto:300,400,500,900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32" />
+    <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16" />
+
+  </head>
+  <body>
+    <script type="text/javascript" src="countryRoadsUserInterface.js"></script>
+  	<div class="header">
+  		<img src="logo.png" class="logo">
+  		<p>Country Roads</p>
+  	</div>
+  	<div class="mainContainer">
+
+	</div>
+    <div class="footer">
+    	<p>Alex Elias&emsp;&#8226;&emsp;Greg Hansell&emsp;&#8226;&emsp;Ethan Rambacher&emsp;&#8226;&emsp;Ethan Cantlin&emsp;&mdash;&emsp;HackUMass VII</p>
+    </div>
+  </body>
+
+
+  <template>
+<div class="relayStationBorder">
+      <div class="relayStationContainer">
+        <div class="relayStationHeader">
+            <h2>Alpha Relay Station</h2>
+            <p class="stationDescription">Elm Street</p>
+            <p class="stationId">RS # 67890</p>
+        </div>
+        <div class="relayStationContent"> 
+        </div>
+    </div>
+</div>
+  </template>
+  <template id="carContainerTemplate">
+  <div class="carContainer">
+        <div class="carHeader">
+            <div class="squareGreen"></div>
+            <span class="carDescription">Green Car #12345</span>
+        </div>
+        <div class = carDataContainer>
+            <div>
+                <div class="dataValue" id ="speed">43</div>
+                <div class="dataLabel">MPH</div>
+            </div>
+            <div>
+                <div class="dataValue" id ="gas">28%</div>
+                <div class="dataLabel">Gas</div>
+            </div>
+            <div>
+                <img class="headingArrow" src="N.png" style="transform: rotate(90deg);">
+                <!-- <div class="dataValue" id ="heading">NNE</div> -->
+                <div class="dataLabel" id="headingLabel">NNE</div>
+            </div>
+        </div>
+        <div class="carTimestamp">10/19/19 4:35:23 AM</div>
+        <div class="measId">Meas # 1234567890</div>
+    </div>
+    </template>
+</html>

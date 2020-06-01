@@ -1,0 +1,21 @@
+[{
+		"measurementId": 1234567890,
+		"carId": 12345,
+		"color": "red",
+		"heading": 270,
+		"gasLevel": 0.75,
+		"speed": 50,
+		"time": "1000-01-01 00:00:00.000000",
+		"relayStationId": 67890
+	},
+	{
+		"measurementId": 1234567891,
+		"carId": 12346,
+		"color": "red",
+		"heading": 90,
+		"gasLevel": 0.50,
+		"speed": 60,
+		"time": "1000-01-02 00:00:00.000000",
+		"relayStationId": 67890
+	}
+]
